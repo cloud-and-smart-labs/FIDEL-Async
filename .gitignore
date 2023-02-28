@@ -1,6 +1,6 @@
 .history
 async_FL_Server/Models/*
-!sync_FL_Server/Models/test.txt
+!async_FL_Server/Models/test.txt
 async_FL_Server/.history
 async_FL_Server/modelParams.yaml
 async_FL_Server/client_q
