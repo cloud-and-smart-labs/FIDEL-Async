@@ -105,41 +105,13 @@ def optimiseModels():
     print("Averaged over all models - optimised model saved!")
     saveLearntMetrices("Models/model.h5")
 
-# def getParametersFromYaml():
-
-#     with open("modelParams.yaml", "r") as stream:
-#         try:
-#             parameters = yaml.safe_load(stream)
-#             return parameters
-#         except yaml.YAMLError as exc:
-#             print(exc)
-#             print("Error in reading parameter Yaml file")
-
-  
-#Create and initilize model for first time. 
-# def createInitialModel(modelParameters):
-#     K.clear_session()
-
-#     model = tf.keras.Sequential()
-#     model.add(tf.keras.Input(shape=tuple(modelParameters['input shape'])))
-#     for i in range(len(modelParameters['neurons'])): 
-#         if modelParameters['layers'][i] == 'dense' :
-#             model.add(tf.keras.layers.Dense(modelParameters['neurons'][i], activation=modelParameters['activations'][i]))
-#         elif modelParameters['layers'][i] == 'conv1d' :
-#             model.add(tf.keras.layers.Conv(modelParameters['neurons'][i], activation=modelParameters['activations'][i]))
-
-#     model.compile(optimizer=modelParameters['optimizer'], loss=tf.keras.losses.CategoricalCrossentropy(), metrics=['accuracy'])
-#     model.summary()
-#     input()
-#     model.save('Models/model.h5')
-
 def createInitialModel():
 
     # K.clear_session()
     # model = tf.keras.Sequential()
     # model.add(tf.keras.layers.Dense(64, activation='relu', input_shape=(512,)))
     # model.add(tf.keras.layers.Dense(8, activation='softmax'))
-    # model.compile(optimizer='adam', loss=tf.keras.losses.CategoricalCrossentropy(), metrics=['accuracy'])
+    # model.compile(optimizer='sgd', loss=tf.keras.losses.CategoricalCrossentropy(), metrics=['accuracy'])
     # model.save('Models/model.h5')
 
     # K.clear_session()
@@ -147,7 +119,7 @@ def createInitialModel():
     # model.add(tf.keras.layers.Dense(32, activation='relu', input_shape=(512,)))
     # model.add(tf.keras.layers.Dense(16, activation='relu'))
     # model.add(tf.keras.layers.Dense(8, activation='softmax'))
-    # model.compile(optimizer='adam', loss=tf.keras.losses.CategoricalCrossentropy(), metrics=['accuracy'])
+    # model.compile(optimizer='sgd', loss=tf.keras.losses.CategoricalCrossentropy(), metrics=['accuracy'])
     # model.save('Models/model.h5')
 
     K.clear_session()
@@ -158,7 +130,7 @@ def createInitialModel():
     model.add(Conv1D(filters=4, kernel_size=3, padding='same',  activation='relu'))
     model.add(Flatten())
     model.add(Dense(8, activation='softmax'))
-    model.compile(optimizer='adam', loss=tf.keras.losses.CategoricalCrossentropy(), metrics=['accuracy'])
+    model.compile(optimizer='sgd', loss=tf.keras.losses.CategoricalCrossentropy(), metrics=['accuracy'])
     model.save('Models/model.h5')
 
     model.summary()
@@ -254,7 +226,6 @@ mqttc.on_subscribe = on_subscribe
 mqttc.username_pw_set("server","cloud")
 mqttc.connect(borker_address, borker_port, keep_alive)
 
-# modelParameters = getParametersFromYaml()
 createInitialModel()
 initlizeGlobalMetrics()
 saveLearntMetrices("Models/model.h5")
@@ -279,5 +250,5 @@ while True:
         with open("client_q", "w") as fp:
             json.dump(client_queue_size_per_iteration, fp)
         break
-# mqttc.disconnect()
-# mqttc.loop_stop()
+mqttc.loop_stop()
+mqttc.disconnect()
